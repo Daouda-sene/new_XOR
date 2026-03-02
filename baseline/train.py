@@ -1,1 +1,28 @@
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from model import XORNet
 
+X = torch.tensor([[0.,0.],
+                  [0.,1.],
+                  [1.,0.],
+                  [1.,1.]])
+
+Y = torch.tensor([[0.],
+                  [1.],
+                  [1.],
+                  [0.]])
+
+model = XORNet()
+criterion = nn.BCELoss()
+optimizer = optim.Adam(model.parameters(), lr=0.01)
+
+for epoch in range(3000):
+    optimizer.zero_grad()
+    output = model(X)
+    loss = criterion(output, Y)
+    loss.backward()
+    optimizer.step()
+
+torch.save(model.state_dict(), "xor_model.pth")
+print("Model saved.")
