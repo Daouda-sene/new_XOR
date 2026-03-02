@@ -9,7 +9,7 @@ X = torch.tensor([[0.,0.],
                   [1.,1.]])
 
 model = XORNet()
-model.load_state_dict(torch.load("xor_model.pth"))
+
 model.eval()
 
 with torch.no_grad():
