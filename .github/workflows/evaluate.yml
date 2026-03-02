@@ -1,23 +1,28 @@
-
 name: Evaluate Submission
 
 on:
   push:
-    paths:
-      - "predictions.txt"
+    branches:
+      - main
 
 jobs:
   evaluate:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install torch numpy
+        run: pip install -r requirements.txt
+
+      - name: Run prediction
+        run: python predict.py
 
       - name: Run evaluation
-        run: python evaluation/score.py predictions.txt
-
-      - name: Update leaderboard
-        run: python leaderboard/update.py score.json
+        run: python evaluation/score.py
